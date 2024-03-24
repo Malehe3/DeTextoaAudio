@@ -18,7 +18,8 @@ except:
 st.subheader("Texto a audio.")
 
 # Mensaje de bienvenida
-st.write("COCINA SIN PROBLEMAS O COMPLICACIONES")
+st.write("¡Bienvenido a CocinaFacil, donde cocinar será sin problemas ni complicaciones con ChefIA, tu asistente de cocina personal! En este sitio web, te ofrecemos una experiencia culinaria sin igual, donde podrás acceder a recetas deliciosas y prácticas de una manera fácil y segura. Nos preocupamos por tu comodidad y seguridad en la cocina, por eso hemos creado este espacio para que puedas acceder a la información de las recetas sin necesidad de estar leyendo, lo cual podría ocasionar algún accidente. Con ChefIA, te narraremos la información para que puedas concentrarte en cocinar sin preocupaciones y disfrutar al máximo de tus creaciones culinarias.")
+
 
 # Función para convertir texto a audio
 def text_to_speech(text, tld):
