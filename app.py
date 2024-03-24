@@ -2,15 +2,13 @@ import streamlit as st
 import os
 import time
 import glob
-import os
 from gtts import gTTS
 from PIL import Image
 
-st.title("Interfaces Multimodales.")
+st.title("CocinaFacil - Tu Asistente de Cocina Personalizado")
+
 image = Image.open('gatito.jpg')
-
 st.image(image, width=200)
-
 
 try:
     os.mkdir("temp")
@@ -18,20 +16,13 @@ except:
     pass
 
 st.subheader("Texto a audio.")
-st.write('Las interfaces de texto a audio son fundamentales en las interfaces multimodales ya que permiten '  
-         'una comunicación más accesible y natural, facilitando la inclusión de personas con discapacidades ' 
-         ' visuales y permitiendo la interacción en situaciones donde no es posible leer texto. Estas interfaces '  
-         ' también impulsan tecnologías emergentes como los asistentes de voz inteligentes, haciendo que la tecnología ' 
-         ' sea más accesible e intuitiva para todos los usuarios')
-           
 
-text = st.text_input("Ingrese el texto.")
+# Mensaje de bienvenida
+st.write("COCINA SIN PROBLEMAS O COMPLICACIONES")
 
-tld="es"
-
+# Función para convertir texto a audio
 def text_to_speech(text, tld):
-    
-    tts = gTTS(text,"es", tld, slow=False)
+    tts = gTTS(text, "es", tld, slow=False)
     try:
         my_file_name = text[0:20]
     except:
@@ -39,20 +30,26 @@ def text_to_speech(text, tld):
     tts.save(f"temp/{my_file_name}.mp3")
     return my_file_name, text
 
+# Opción para ingresar texto o seleccionar una receta predefinida
+option = st.radio("¿Cómo prefieres obtener la receta?", ("Escribir la receta", "Seleccionar receta predefinida"))
 
-#display_output_text = st.checkbox("Verifica el texto")
+# Si elige escribir la receta
+if option == "Escribir la receta":
+    text = st.text_area("Escribe la receta aquí")
+else:
+    # Lista de recetas predefinidas
+    recetas_predefinidas = ["Receta 1", "Receta 2", "Receta 3"]
+    selected_recipe = st.selectbox("Selecciona una receta predefinida", recetas_predefinidas)
+    text = selected_recipe
 
-if st.button("convertir"):
-    result, output_text = text_to_speech(text, tld)
+# Botón para convertir texto a audio
+if st.button("Convertir texto a audio"):
+    result, output_text = text_to_speech(text, "es")
     audio_file = open(f"temp/{result}.mp3", "rb")
     audio_bytes = audio_file.read()
-    st.markdown(f"## Tú audio:")
     st.audio(audio_bytes, format="audio/mp3", start_time=0)
-
-    #if display_output_text:
     st.markdown(f"## Texto en audio:")
     st.write(f" {output_text}")
-
 
 def remove_files(n):
     mp3_files = glob.glob("temp/*mp3")
@@ -62,7 +59,6 @@ def remove_files(n):
         for f in mp3_files:
             if os.stat(f).st_mtime < now - n_days:
                 os.remove(f)
-                print("Deleted ", f)
-
 
 remove_files(7)
+
